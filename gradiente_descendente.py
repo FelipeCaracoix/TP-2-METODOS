@@ -1,5 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from formula import suma_derivada, suma_f
+from derivada_b import generateRandomData
+
+b,d,i,w = generateRandomData()
 
 # Máxima cantidad de iteraciones (previene loops infinitos)
 MAX_ITER = 1000
@@ -9,7 +13,8 @@ TOLERANCIA = 0.0001
 
 # Derivada de f(x)
 def df(x):
-    return 2*x
+    return suma_derivada(i,w,b,d)
+
 
 # Función de búsqueda del mínimo de f(x)
 def gradiente_descendente(x_0):
@@ -38,5 +43,13 @@ def gradiente_descendente(x_0):
     return x_tsig
 
 # Función a optimizar f(x) = x**2
-def f(x):
-    return x**2
+def f(i,w,b,d):
+    return suma_f(i,w,b,d)
+
+
+def main():
+    gradiente_descendente(d)
+
+
+if __name__ == "__main__":
+    main()
