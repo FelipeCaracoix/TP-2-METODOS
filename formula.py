@@ -17,6 +17,7 @@ def suma_derivada(i_matriz, w, b, d_array):
     # Iteramos sobre las columnas de la matriz i
     for j in range(i_matriz.shape[1]):
         # Calculamos f_w_b para la columna actual y restamos d_array[j]
+        print(Dsuma_totalW.shape)
         derW = derivadaW(b,d_array[j],i_matriz[:, j], w)
         derB = derivadaB(b,d_array[j],i_matriz[:, j], w)
         print(Dsuma_totalW.shape)

@@ -38,13 +38,20 @@ def gradiente_descendente(w_inicial, b_inicial, i_matriz, d_array):
         b = b_siguiente
         iter += 1
    
-    return w, b
+    return w, b # X óptimos.
 
 # Función a optimizar f(w, b) 
 def f(i_matriz, w, b, d_array):
     
     suma_w, suma_b = suma_derivada(i_matriz, w, b, d_array)[0]
     return suma_w.sum() + suma_b  # Sumamos los valores de f(w) y f(b)
+
+
+def funcion_f(i_matriz, w, b, d_array):
+    suma_total = 0.0
+    for i in range(i_matriz.shape[1]):
+        suma_total += ((np.tanh(w.dot(i_matriz[:,i]) + b) + 1) / 2 - d_array[i])**2
+    return suma_total
 
 """
 # Función principal
