@@ -11,7 +11,6 @@ TOLERANCIA = 0.0001
 def df(x):
     return 2*x
 
-
 # Función de búsqueda del mínimo de f(x)
 def gradiente_descendente(x_0):
     # Valor inicial de x
