@@ -7,7 +7,9 @@ def fAndG(b, d, i, w):
     assert isinstance(w, np.ndarray) and w.ndim == 1
     
     num_columns_i = i.shape[1]  # número de columnas en la matriz i
-    
+
+    Fwb = (np.tanh((i * w) + b) + 1)/2
+
     functionValue = 0
     gradient = np.zeros_like(w, dtype=np.float64)  # inicializa gradient con tipo float64
     
