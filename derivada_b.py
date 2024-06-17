@@ -50,7 +50,7 @@ def checkGradient(b, d, i, w):
     # f(x + t * delta) - f(x - t * delta) / (2t)
     # should be roughly equal to inner product <g, delta>
     t = 1E-6
-    delta = float(np.random.randn(1))
+    delta = float(np.random.randn(1)[0])
     f1, _ = derivadaB(b + t * delta, d, i, w)
     f2, _ = derivadaB(b - t * delta, d, i, w)
     f, g = derivadaB(b, d, i, w)

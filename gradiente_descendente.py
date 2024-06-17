@@ -1,25 +1,16 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from formula import suma_derivada, suma_f
-from derivada_b import generateRandomData
-
-b,d,i,w = generateRandomData()
 
 # Máxima cantidad de iteraciones (previene loops infinitos)
 MAX_ITER = 1000
 
 # Criterio de convergencia (identifica un "plateau")
 TOLERANCIA = 0.0001
-
-# Derivada de f(x)
-def df(x):
-    return suma_derivada(i,w,b,d)
-
-
-# Función de búsqueda del mínimo de f(x)
-def gradiente_descendente(x_0):
-    # Valor inicial de x
-    x_t = x_0
+def gradiente_descendente(w_inicial, b_inicial, i_matriz, d_array):
+    # Valores iniciales de w y b
+    w = w_inicial
+    b = b_inicial
 
     # Factor de escala de la derivada de f (hiperparámetro)
     alpha = 0.1
@@ -28,28 +19,39 @@ def gradiente_descendente(x_0):
     iter = 0
 
     while iter <= MAX_ITER:
-        print("Iteración: ", iter, "- Mínimo alcanzado hasta el momento: ", f(x_t))
-        # Computamos siguiente x a partir de la derivada de la función
-        x_tsig = x_t - alpha * df(x_t)
+        # Computamos siguiente w y b a partir de la derivada de la función
+        _, (grad_w, grad_b) = suma_derivada(i_matriz, w, b, d_array)
+        
+        w_siguiente = w - alpha * grad_w
+        b_siguiente = np.array([b - alpha * grad_b])
 
         # Chequeamos si ya alcanzamos la convergencia
-        if abs(f(x_tsig) - f(x_t)) < TOLERANCIA:
+        if np.linalg.norm(w_siguiente - w) < TOLERANCIA and abs(b_siguiente - b) < TOLERANCIA:
             break
 
         # Preparamos la siguiente iteración
-        x_t = x_tsig
-        iter = iter + 1
+        w = w_siguiente
+        b = b_siguiente
+        iter += 1
 
-    return x_tsig
+    return w, b
 
-# Función a optimizar f(x) = x**2
-def f(i,w,b,d):
-    return suma_f(i,w,b,d)
+# Función a optimizar f(w, b) 
+def f(i_matriz, w, b, d_array):
+    
+    suma_w, suma_b = suma_derivada(i_matriz, w, b, d_array)[0]
+    return suma_w.sum() + suma_b  # Sumamos los valores de f(w) y f(b)
 
-
+# Función principal
 def main():
-    gradiente_descendente(d)
+    w_inicial = np.random.randn(3)
+    b_inicial = np.random.randn(1)
+    i_matriz = np.random.randn(3, 5)  # Ejemplo con 5 muestras
+    d_array = np.random.randn(5)
 
+    w_optimo, b_optimo = gradiente_descendente(w_inicial, b_inicial, i_matriz, d_array)
+    print('w óptimo:', w_optimo)
+    print('b óptimo:', b_optimo)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
