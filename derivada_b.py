@@ -21,7 +21,7 @@ from __future__ import division, print_function, absolute_import
 
 import numpy as np
 
-def fAndG(b, d, i, w):
+def derivadaB(b, d, i, w):
     if isinstance(b, np.ndarray):
         dim = b.shape
         assert dim == (1, )
@@ -51,9 +51,9 @@ def checkGradient(b, d, i, w):
     # should be roughly equal to inner product <g, delta>
     t = 1E-6
     delta = float(np.random.randn(1))
-    f1, _ = fAndG(b + t * delta, d, i, w)
-    f2, _ = fAndG(b - t * delta, d, i, w)
-    f, g = fAndG(b, d, i, w)
+    f1, _ = derivadaB(b + t * delta, d, i, w)
+    f2, _ = derivadaB(b - t * delta, d, i, w)
+    f, g = derivadaB(b, d, i, w)
     print('approximation error',
           np.linalg.norm((f1 - f2) / (2*t) - np.tensordot(g, delta, axes=0)))
 
@@ -67,7 +67,7 @@ def generateRandomData():
 
 if __name__ == '__main__':
     b, d, i, w = generateRandomData()
-    functionValue, gradient = fAndG(b, d, i, w)
+    functionValue, gradient = derivadaB(b, d, i, w)
     print('functionValue = ', functionValue)
     print('gradient = ', gradient)
 
