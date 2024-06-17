@@ -24,7 +24,7 @@ def suma_derivada(i_matriz, w, b, d_array):
         suma_totalB += derB[0]
         Dsuma_totalW += derW[1]
         Dsuma_totalB += derB[1]
-    print()
+  
     
     return ((suma_totalW, suma_totalB),(Dsuma_totalW, Dsuma_totalB))
             # valor f(W), valor f(B),    valor df(W), valor df(B)

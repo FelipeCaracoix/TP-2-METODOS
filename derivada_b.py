@@ -44,32 +44,3 @@ def derivadaB(b, d, i, w):
     gradient = ((1 - (t_0 ** 2)) * t_1)
 
     return functionValue, gradient
-
-def checkGradient(b, d, i, w):
-    # numerical gradient checking
-    # f(x + t * delta) - f(x - t * delta) / (2t)
-    # should be roughly equal to inner product <g, delta>
-    t = 1E-6
-    delta = float(np.random.randn(1)[0])
-    f1, _ = derivadaB(b + t * delta, d, i, w)
-    f2, _ = derivadaB(b - t * delta, d, i, w)
-    f, g = derivadaB(b, d, i, w)
-    print('approximation error',
-          np.linalg.norm((f1 - f2) / (2*t) - np.tensordot(g, delta, axes=0)))
-
-def generateRandomData():
-    b = np.random.randn(1)
-    d = np.random.randn(1)
-    i = np.random.randn(3)
-    w = np.random.randn(3)
-
-    return b, d, i, w
-
-if __name__ == '__main__':
-    b, d, i, w = generateRandomData()
-    functionValue, gradient = derivadaB(b, d, i, w)
-    print('functionValue = ', functionValue)
-    print('gradient = ', gradient)
-
-    print('numerical gradient checking ...')
-    checkGradient(b, d, i, w)

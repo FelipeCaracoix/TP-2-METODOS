@@ -22,6 +22,8 @@ from __future__ import division, print_function, absolute_import
 import numpy as np
 
 def derivadaW(b, d, i, w):
+    
+    
     if isinstance(b, np.ndarray):
         dim = b.shape
         assert dim == (1, )
@@ -45,31 +47,3 @@ def derivadaW(b, d, i, w):
 
     return functionValue, gradient
 
-def checkGradient(b, d, i, w):
-    # numerical gradient checking
-    # f(x + t * delta) - f(x - t * delta) / (2t)
-    # should be roughly equal to inner product <g, delta>
-    t = 1E-6
-    delta = np.random.randn(3)
-    f1, _ = derivadaW(b, d, i, w + t * delta)
-    f2, _ = derivadaW(b, d, i, w - t * delta)
-    f, g = derivadaW(b, d, i, w)
-    print('approximation error',
-          np.linalg.norm((f1 - f2) / (2*t) - np.tensordot(g, delta, axes=1)))
-
-def generateRandomData():
-    b = np.random.randn(1)
-    d = np.random.randn(1)
-    i = np.random.randn(3)
-    w = np.random.randn(3)
-
-    return b, d, i, w
-
-if __name__ == '__main__':
-    b, d, i, w = generateRandomData()
-    functionValue, gradient = derivadaW(b, d, i, w)
-    print('functionValue = ', functionValue)
-    print('gradient = ', gradient)
-
-    print('numerical gradient checking ...')
-    checkGradient(b, d, i, w)

@@ -19,11 +19,15 @@ def gradiente_descendente(w_inicial, b_inicial, i_matriz, d_array):
     iter = 0
 
     while iter <= MAX_ITER:
+        
         # Computamos siguiente w y b a partir de la derivada de la función
         _, (grad_w, grad_b) = suma_derivada(i_matriz, w, b, d_array)
-        
+       
+
+
         w_siguiente = w - alpha * grad_w
-        b_siguiente = np.array([b - alpha * grad_b])
+        b_siguiente = b - alpha * grad_b
+
 
         # Chequeamos si ya alcanzamos la convergencia
         if np.linalg.norm(w_siguiente - w) < TOLERANCIA and abs(b_siguiente - b) < TOLERANCIA:
@@ -33,7 +37,7 @@ def gradiente_descendente(w_inicial, b_inicial, i_matriz, d_array):
         w = w_siguiente
         b = b_siguiente
         iter += 1
-
+   
     return w, b
 
 # Función a optimizar f(w, b) 
