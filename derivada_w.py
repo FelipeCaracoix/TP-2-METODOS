@@ -22,8 +22,6 @@ from __future__ import division, print_function, absolute_import
 import numpy as np
 
 def derivadaW(b, d, i, w):
-    
-    
     if isinstance(b, np.ndarray):
         dim = b.shape
         assert dim == (1, )

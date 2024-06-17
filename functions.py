@@ -69,7 +69,7 @@ def checkGradient(b, d, i, w):
     print('approximation error',
           np.linalg.norm((f1 - f2) / (2*t) - np.tensordot(g, delta, axes=1)))
 
-def generateRandomData():
+"""def generateRandomData():
     b = np.random.randn(1)
     d = np.random.randn(1)
     i = np.random.randn(3, 3)
@@ -84,11 +84,11 @@ if __name__ == '__main__':
     print('gradient = ', gradient)
 
     print('numerical gradient checking ...')
-    checkGradient(b, d, i, w)
+    checkGradient(b, d, i, w)"""
 
 
 ############################################################
-
+"""
 def fAndG(b, d, i, w):
     assert isinstance(b, float) or isinstance(b, int)
     assert isinstance(d, float) or isinstance(d, int)
@@ -129,3 +129,4 @@ if __name__ == '__main__':
     functionValue, gradient = fAndG(b, d, i, w)
     print('\nfunctionValue = ', functionValue)
     print('gradient = ', gradient)
+"""

@@ -46,6 +46,7 @@ def f(i_matriz, w, b, d_array):
     suma_w, suma_b = suma_derivada(i_matriz, w, b, d_array)[0]
     return suma_w.sum() + suma_b  # Sumamos los valores de f(w) y f(b)
 
+"""
 # Función principal
 def main():
     w_inicial = np.random.randn(3)
@@ -59,3 +60,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    """

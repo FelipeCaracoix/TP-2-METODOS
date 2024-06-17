@@ -9,17 +9,17 @@ def f_w_b(b, d, i, w):
 
 def suma_derivada(i_matriz, w, b, d_array):
     # Inicializamos la suma total
-    Dsuma_totalW = np.zeros(3)
+    Dsuma_totalW = np.zeros(i_matriz.shape[0])
     Dsuma_totalB = 0
-    suma_totalW = np.zeros(3)
+    suma_totalW = np.zeros(i_matriz.shape[0])
     suma_totalB = 0 
-
+    
     # Iteramos sobre las columnas de la matriz i
     for j in range(i_matriz.shape[1]):
         # Calculamos f_w_b para la columna actual y restamos d_array[j]
         derW = derivadaW(b,d_array[j],i_matriz[:, j], w)
         derB = derivadaB(b,d_array[j],i_matriz[:, j], w)
-        
+        print(Dsuma_totalW.shape)
         suma_totalW += derW[0]
         suma_totalB += derB[0]
         Dsuma_totalW += derW[1]
@@ -28,6 +28,7 @@ def suma_derivada(i_matriz, w, b, d_array):
     
     return ((suma_totalW, suma_totalB),(Dsuma_totalW, Dsuma_totalB))
             # valor f(W), valor f(B),    valor df(W), valor df(B)
+
 def suma_f(i_matriz, w, b, d_array):
     # Inicializamos la suma total
     suma_total = 0
