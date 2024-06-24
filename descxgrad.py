@@ -1,6 +1,7 @@
 import numpy as np
 import os
 from PIL import Image
+import matplotlib.pyplot as plt
 from gradiente_descendente import gradiente_descendente
 
 def abrirImagenesEscaladas(carpeta, escala=32):
@@ -9,60 +10,62 @@ def abrirImagenesEscaladas(carpeta, escala=32):
 
     for dirpath, dirnames, filenames in os.walk(carpeta):
         for file in filenames:
-            img = Image.open(os.path.join(carpeta, file))
+            img = Image.open( os.path.join(carpeta, file) )
             img = img.resize((escala, escala))
-            img = img.convert('L')  # Convertir a escala de grises
-            img = np.asarray(img).reshape((escala ** 2)) / 255
+            img.convert('1')
+            img = np.asarray(img)
+            if len(img.shape)==3:
+                img = img[:,:,0].reshape((escala**2 )) / 255
+            else:
+                img = img.reshape((escala**2 )) / 255
 
+            imagenes.append( img )
             # Asignar etiquetas basadas en el nombre del archivo
             if "virus" in file or "bacteria" in file:
                 etiqueta = 1
+
             else:
                 etiqueta = 0
 
-            imagenes.append(img)
             etiquetas.append(etiqueta)
-
-    return imagenes, etiquetas
+    return np.array(imagenes), np.array(etiquetas)
 
 def cargar_datos(carpeta_base, escala=32):
-    pneumonia_path = os.path.join(carpeta_base, "PNEUMONIA")
-    normal_path = os.path.join(carpeta_base, "NORMAL")
+    images, labels = abrirImagenesEscaladas(carpeta_base, escala)
+    return images, labels
 
-    pneumonia_images, pneumonia_labels = abrirImagenesEscaladas(pneumonia_path, escala)
-    normal_images, normal_labels = abrirImagenesEscaladas(normal_path, escala)
+def balancear_datos(imagenes, diagnostico):
+    imagenes_balanceadas = gradiente_descendente(w, b, imagenes, diagnostico)
+    return imagenes_balanceadas
 
-    # Unir las imágenes y etiquetas
-    X = pneumonia_images + normal_images
-    y = pneumonia_labels + normal_labels
+def error_cuadratico_medio(i, w, b, d_array):
+    suma_total = 0.0
+    errores = []
+    for j in range(i.shape[0]):
+        prediccion = (np.tanh(w.dot(i[j]) + b) + 1) / 2
+        suma_total += (prediccion - d_array[j])**2
+        if suma_total/(j+1) == float("inf"):
+            errores.append(1)
+        errores.append(suma_total/(j+1))
 
-    return np.array(X), np.array(y)
+    return errores
 
-def balancear_datos(imagenes_entrenamiento, etiquetas_entrenamiento):
-    b = np.random.randn(1)
-    w = np.random.randn(390)
-    imagenes_entrenamiento_balanceadas, errores = gradiente_descendente(w, b, imagenes_entrenamiento, etiquetas_entrenamiento)
-    return imagenes_entrenamiento_balanceadas, errores
 
 # Cargar imágenes y datos
-train_images, d_entrenamiento = cargar_datos("/Users/victoriamarsili/Downloads/chest_xray/train", escala=32)
-test_images, d_test = cargar_datos("/Users/victoriamarsili/Downloads/chest_xray/test", escala=32)
+images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=32)
 
-# Inicializar d a partir de los nombres de los archivos
-d_entrenamiento = np.array([1 if "virus" in fname or "bacteria" in fname else 0 for fname in d_entrenamiento])
-d_test = np.array([1 if "virus" in fname or "bacteria" in fname else 0 for fname in d_test])
+b = np.random.randn(1)
+w = np.random.randn(images[0].shape[0])
+#print(balancear_datos(images,d))
 
-# Ejecutar el balanceo de datos y obtener errores
-w_estrella, b_estrella, train_errors, test_errors = gradiente_descendente(
-    np.random.randn(train_images.shape[1]), np.random.randn(1), train_images, d_entrenamiento, test_images, d_test)
 
-# Graficar errores
-import matplotlib.pyplot as plt
+errors = error_cuadratico_medio(images,w,b,d)
+print(errors)
 
-plt.plot(train_errors, label='Error de Entrenamiento')
-plt.plot(test_errors, label='Error de Prueba')
-plt.xlabel('Iteraciones')
-plt.ylabel('Error Cuadrático Medio')
-plt.title('Evolución del Error durante el Entrenamiento')
+
+plt.plot(errors, label='Error')
+plt.xlabel('Iterations')
+plt.ylabel('Error')
+plt.title('Decreasing Error over Iterations')
 plt.legend()
 plt.show()
