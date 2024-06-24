@@ -34,11 +34,31 @@ def cargar_datos(carpeta_base, escala=32):
     images, labels = abrirImagenesEscaladas(carpeta_base, escala)
     return images, labels
 
-def balancear_datos(imagenes, diagnostico):
-    imagenes_balanceadas = gradiente_descendente(w, b, imagenes, diagnostico)
-    return imagenes_balanceadas
+def balancear_datos(imagenes, etiquetas):
+    # Separar las imágenes en dos clases
+    class_0 = [img for img, label in zip(imagenes, etiquetas) if label == 0]
+    class_1 = [img for img, label in zip(imagenes, etiquetas) if label == 1]
+
+    # Determinar la cantidad mínima de muestras entre las clases
+    n_samples = min(len(class_0), len(class_1))
+
+    # Seleccionar n_samples de cada clase
+    balanced_class_0 = class_0[:n_samples]
+    balanced_class_1 = class_1[:n_samples]
+
+    # Combinar y mezclar las clases balanceadas
+    imagenes_balanceadas = balanced_class_0 + balanced_class_1
+    etiquetas_balanceadas = [0] * n_samples + [1] * n_samples
+
+    combined = list(zip(imagenes_balanceadas, etiquetas_balanceadas))
+    np.random.shuffle(combined)
+
+    imagenes_balanceadas, etiquetas_balanceadas = zip(*combined)
+
+    return np.array(imagenes_balanceadas), np.array(etiquetas_balanceadas)
 
 def error_cuadratico_medio(i, w, b, d_array):
+    print(i)
     suma_total = 0.0
     errores = []
     for j in range(i.shape[0]):
@@ -50,16 +70,17 @@ def error_cuadratico_medio(i, w, b, d_array):
 
     return errores
 
-
 # Cargar imágenes y datos
 images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=32)
 
 b = np.random.randn(1)
 w = np.random.randn(images[0].shape[0])
-#print(balancear_datos(images,d))
+alpha_values = [0.001, 0.01, 0.05, 0.1, 0.5]
 
+images_balanceadas, d_balanceado = balancear_datos(images, d)
+w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, alpha_values[4])
 
-errors = error_cuadratico_medio(images,w,b,d)
+errors = error_cuadratico_medio(images_balanceadas, w_estrella, b_estrella, d_balanceado)
 print(errors)
 
 
