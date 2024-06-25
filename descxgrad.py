@@ -75,6 +75,8 @@ def error_cuadratico_medio(i, w, b, d_array):
 images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=32)
 #felo
 images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/train/ALL", escala=32)
+#luli-capa:
+images, d = cargar_datos("/Users/victoriamarsili/Downloads/chest_xray/test/ALL", escala=32)
 b = np.random.randn(1)
 w = np.random.randn(images[0].shape[0])
 alpha_values = [0.001, 0.01, 0.05, 0.1, 0.5]
