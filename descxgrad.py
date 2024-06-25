@@ -84,7 +84,6 @@ print('hola')
 # #luli-capa:
 # images, d = cargar_datos("/Users/victoriamarsili/Downloads/chest_xray/test/ALL", escala=32)
 #b = np.random.uniform(0,1,1)
-
 # w = np.random.randn(images[0].shape[0])
 # w = np.array([-0.1]*images[0].shape[0])
 
