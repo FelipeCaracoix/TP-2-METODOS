@@ -62,7 +62,6 @@ def error_cuadratico_medio(i, w, b, d_array):
     errores = []
     for j in range(i.shape[0]):
         z = np.dot(w, i[j]) + b
-        print(z)
         prediccion = (np.tanh(z) + 1) / 2
         print(prediccion, d_array[j])
         #prediccion = (np.tanh(w.dot(i[j]) + b) + 1) / 2
@@ -93,7 +92,7 @@ w = np.random.randn(images[0].shape[0])
 alpha_values = [0.001, 0.01, 0.05, 0.1, 0.5]
 
 images_balanceadas, d_balanceado = balancear_datos(images, d)
-w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, alpha_values[0])
+w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, 0.0001)
 
 errors = error_cuadratico_medio(images_balanceadas, w_estrella, b_estrella, d_balanceado)
 print(f"Valor inicial de b: {b}")
