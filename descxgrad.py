@@ -70,11 +70,15 @@ def error_cuadratico_medio(i, w, b, d_array):
 
     return errores
 
+print("empece")
 # Cargar imágenes y datos
 images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=32)
-
+print("empece")
 b = np.random.randn(1)
+
+
 w = np.random.randn(images[0].shape[0])
+print(b,w)
 alpha_values = [0.001, 0.01, 0.05, 0.1, 0.5]
 
 images_balanceadas, d_balanceado = balancear_datos(images, d)
