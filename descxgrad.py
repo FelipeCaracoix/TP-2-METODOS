@@ -71,22 +71,20 @@ def error_cuadratico_medio(i, w, b, d_array):
     return errores
 
 # Cargar imágenes y datos
+#wolo
 images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=32)
-
+#felo
+images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/train/ALL", escala=32)
 b = np.random.randn(1)
-
-b = 0.94
-# w = np.random.randn(images[0].shape[0])
-w = np.array([0.95]*images[0].shape[0])
-
+w = np.random.randn(images[0].shape[0])
 alpha_values = [0.001, 0.01, 0.05, 0.1, 0.5]
 
 images_balanceadas, d_balanceado = balancear_datos(images, d)
-w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, alpha_values[0])
+w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, alpha_values[4])
 
 errors = error_cuadratico_medio(images_balanceadas, w_estrella, b_estrella, d_balanceado)
 print(errors)
-print(len(errors))
+
 
 plt.plot(errors, label='Error')
 plt.xlabel('Iterations')
