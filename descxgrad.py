@@ -58,11 +58,14 @@ def balancear_datos(imagenes, etiquetas):
     return np.array(imagenes_balanceadas), np.array(etiquetas_balanceadas)
 
 def error_cuadratico_medio(i, w, b, d_array):
-    print(i)
     suma_total = 0.0
     errores = []
     for j in range(i.shape[0]):
-        prediccion = (np.tanh(w.dot(i[j]) + b) + 1) / 2
+        z = np.dot(w, i[j]) + b
+        print(z)
+        prediccion = (np.tanh(z) + 1) / 2
+        print(prediccion, d_array[j])
+        #prediccion = (np.tanh(w.dot(i[j]) + b) + 1) / 2
         suma_total += (prediccion - d_array[j])**2
         if suma_total/(j+1) == float("inf"):
             errores.append(1)
@@ -72,22 +75,30 @@ def error_cuadratico_medio(i, w, b, d_array):
 
 # Cargar imágenes y datos
 #wolo
-images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=32)
+print('hola')
+images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=128)
+print('hola')
+
 #felo
-images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/train/ALL", escala=32)
-#luli-capa:
-images, d = cargar_datos("/Users/victoriamarsili/Downloads/chest_xray/test/ALL", escala=32)
+# images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/train/ALL", escala=32)
+# #luli-capa:
+# images, d = cargar_datos("/Users/victoriamarsili/Downloads/chest_xray/test/ALL", escala=32)
+#b = np.random.uniform(0,1,1)
+
+# w = np.random.randn(images[0].shape[0])
+# w = np.array([-0.1]*images[0].shape[0])
+
+np.random.seed(42)
 b = np.random.randn(1)
 w = np.random.randn(images[0].shape[0])
 alpha_values = [0.001, 0.01, 0.05, 0.1, 0.5]
 
 images_balanceadas, d_balanceado = balancear_datos(images, d)
-w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, alpha_values[4])
+w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, alpha_values[0])
 
 errors = error_cuadratico_medio(images_balanceadas, w_estrella, b_estrella, d_balanceado)
-print(errors)
-
-
+print(f"Valor inicial de b: {b}")
+print(f"Valor inicial de w: {w}")
 plt.plot(errors, label='Error')
 plt.xlabel('Iterations')
 plt.ylabel('Error')
