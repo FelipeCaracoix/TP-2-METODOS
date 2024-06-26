@@ -7,27 +7,29 @@ from gradiente_descendente import gradiente_descendente
 def abrirImagenesEscaladas(carpeta, escala=32):
     imagenes = []
     etiquetas = []
+    extensiones_validas = ('.png', '.jpg', '.jpeg', '.bmp', '.gif')
 
     for dirpath, dirnames, filenames in os.walk(carpeta):
         for file in filenames:
-            img = Image.open( os.path.join(carpeta, file) )
-            img = img.resize((escala, escala))
-            img.convert('1')
-            img = np.asarray(img)
-            if len(img.shape)==3:
-                img = img[:,:,0].reshape((escala**2 )) / 255
-            else:
-                img = img.reshape((escala**2 )) / 255
+            if file.lower().endswith(extensiones_validas):
+                img = Image.open( os.path.join(carpeta, file) )
+                img = img.resize((escala, escala))
+                img.convert('1')
+                img = np.asarray(img)
+                if len(img.shape)==3:
+                    img = img[:,:,0].reshape((escala**2 )) / 255
+                else:
+                    img = img.reshape((escala**2 )) / 255
 
-            imagenes.append( img )
-            # Asignar etiquetas basadas en el nombre del archivo
-            if "virus" in file or "bacteria" in file:
-                etiqueta = 1
+                imagenes.append( img )
+                # Asignar etiquetas basadas en el nombre del archivo
+                if "virus" in file or "bacteria" in file:
+                    etiqueta = 1
 
-            else:
-                etiqueta = 0
+                else:
+                    etiqueta = 0
 
-            etiquetas.append(etiqueta)
+                etiquetas.append(etiqueta)
     return np.array(imagenes), np.array(etiquetas)
 
 def cargar_datos(carpeta_base, escala=32):
@@ -89,7 +91,7 @@ def plot_error_curve(errors, alpha):
 #wolo
 print('hola')
 images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=128)
-
+print('hola2')
 #felo
 # images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/train/ALL", escala=32)
 # #luli-capa:
@@ -98,17 +100,18 @@ images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computa
 # w = np.random.randn(images[0].shape[0])
 # w = np.array([-0.1]*images[0].shape[0])
 
-np.random.seed(42)
+for r in range(60,80):
+    np.random.seed(r)
 
-b = np.random.randn(1)
-w = np.random.randn(images[0].shape[0])
-print(b,w)
+    b = np.random.randn(1)
+    w = np.random.randn(images[0].shape[0])
+    print(b,w)
 
-alpha_values = [0.001, 0.01, 0.05, 0.1, 0.5]
+    alpha_values = [0.001, 0.01, 0.05, 0.1, 0.5]
 
-images_balanceadas, d_balanceado = balancear_datos(images, d)
-w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, 0.0001)
+    images_balanceadas, d_balanceado = balancear_datos(images, d)
+    w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, 0.0001)
 
-errors = error_cuadratico_medio(images_balanceadas, w_estrella, b_estrella, d_balanceado)
-
-plot_error_curve(errors,0.0001)
+    errors = error_cuadratico_medio(images_balanceadas, w_estrella, b_estrella, d_balanceado)
+    print("seed: ",r)
+    plot_error_curve(errors,0.0001)
