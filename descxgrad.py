@@ -2,7 +2,7 @@ import numpy as np
 import os
 from PIL import Image
 import matplotlib.pyplot as plt
-from gradiente_descendente import gradiente_descendente
+from grad_desc import gradiente_descendente
 import json
 
 def abrirImagenesEscaladas(carpeta, escala=32):
@@ -73,6 +73,8 @@ def error_cuadratico_medio(i, w, b, d_array):
         errores.append(suma_total/(j+1))
 
     return errores
+
+
 def plot_error_curve(errors, alpha):
     plt.figure(figsize=(10, 6))
     plt.plot(errors, label='Error', color='b', linestyle='-', marker='o', markersize=4)
