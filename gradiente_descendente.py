@@ -1,7 +1,7 @@
 import numpy as np
 from formula import suma_derivada, suma_f
 
-MAX_ITER = 1000
+MAX_ITER = 10000
 TOLERANCIA = 0.0001
 
 def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
