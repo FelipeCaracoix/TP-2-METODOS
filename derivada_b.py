@@ -1,10 +1,4 @@
 """
-Sample code automatically generated on 2024-06-10 15:42:04
-
-by www.matrixcalculus.org
-
-from input
-
 d/db ((tanh(w'*i+b)+1)/2-d)^2 = (1-tanh(b+w'*i).^2)*((1+tanh(b+w'*i))/2-d)
 
 where
@@ -13,8 +7,6 @@ b is a scalar
 d is a scalar
 i is a vector
 w is a vector
-
-The generated code is provided "as is" without warranty of any kind.
 """
 
 from __future__ import division, print_function, absolute_import
