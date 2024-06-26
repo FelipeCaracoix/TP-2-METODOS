@@ -2,8 +2,61 @@ import numpy as np
 import os
 from PIL import Image
 import matplotlib.pyplot as plt
-from grad_desc import gradiente_descendente
-import json
+
+from derivadas import derivadaB, derivadaW
+
+def f_w_b(b, d, i, w):
+    # Calculamos el producto punto de w e i, sumamos el escalar b,
+    # aplicamos la función hiperbólica tangente, sumamos 1 y dividimos por 2
+    return ((np.tanh((np.dot(w, i) + b)) + 1) / 2 - d )**2
+
+def suma_derivada(i, w, b, d_array):
+    # Inicializamos la suma total
+    Dsuma_totalW = np.zeros(i[0].shape[0])
+    Dsuma_totalB = 0
+    suma_totalW = np.zeros(i[0].shape[0])
+    suma_totalB = 0
+    # Iteramos sobre las columnas de la matriz i
+    for j in range(i.shape[0]):
+        # Calculamos f_w_b para la columna actual y restamos d_array[j]
+        derW = derivadaW(b,d_array[j],i[j], w)
+        derB = derivadaB(b,d_array[j],i[j], w)
+        suma_totalW += derW[0]
+        suma_totalB += derB[0]
+        Dsuma_totalW += derW[1]
+
+        Dsuma_totalB += derB[1]
+
+    return ((suma_totalW, suma_totalB),(Dsuma_totalW, Dsuma_totalB))
+            # valor f(W), valor f(B),    valor df(W), valor df(B)
+
+MAX_ITER = 10000
+TOLERANCIA = 0.0001
+
+def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
+    w = w_inicial
+    b = b_inicial
+
+    iter = 0
+
+    while iter <= MAX_ITER:
+        print(iter)
+        _, (grad_w, grad_b) = suma_derivada(i, w, b, d)
+        # Regla de actualización
+        w_siguiente = w - alpha * grad_w
+        b_siguiente = b - alpha * grad_b
+
+        if np.linalg.norm(w_siguiente - w) < TOLERANCIA and abs(b_siguiente - b) < TOLERANCIA:
+            break
+
+        w = w_siguiente
+        b = b_siguiente
+        print(b_siguiente)
+        iter += 1
+
+    return w, b
+
+
 
 def abrirImagenesEscaladas(carpeta, escala=32):
     imagenes = []
@@ -87,41 +140,3 @@ def plot_error_curve(errors, alpha):
     plt.yticks(fontsize=12)
     plt.tight_layout()
     plt.show() 
-# Cargar imágenes y datos
-#wolo
-
-#images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=128)
-
-#felo
-images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/train/ALL", escala=128)
-# #luli-capa:
-# images, d = cargar_datos("/Users/victoriamarsili/Downloads/chest_xray/test/ALL", escala=32)
-#b = np.random.uniform(0,1,1)
-# w = np.random.randn(images[0].shape[0])
-# w = np.array([-0.1]*images[0].shape[0])
-
-#np.random.seed(42)
-b = np.random.randn(1)
-w = np.random.randn(images[0].shape[0])
-alpha_values = [0.0001, 0.01, 0.05, 0.1, 0.5]
-
-images_balanceadas, d_balanceado = balancear_datos(images, d)
-w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, alpha_values[0])
-
-w_estrella = w_estrella.tolist()
-b_estrella = b_estrella.tolist()
-valores_dict = {
-    "w_estrella": w_estrella,
-    "b_estrella": b_estrella
-}
-
-nombre = "BW" + str(alpha_values[0]) + "___1.json"
-with open(nombre, "w") as archivo_json:
-    json.dump(valores_dict, archivo_json)
-images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/test/ALL", escala=128)
-errors = error_cuadratico_medio(images, w_estrella, b_estrella, d)
-print(f"Valor inicial de b: {b}")
-print(f"Valor inicial de w: {w}")
-
-plot_error_curve(errors, alpha_values[0])
-
