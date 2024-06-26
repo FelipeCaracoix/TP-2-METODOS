@@ -76,9 +76,9 @@ def error_cuadratico_medio(i, w, b, d_array):
 def plot_error_curve(errors, alpha):
     plt.figure(figsize=(10, 6))
     plt.plot(errors, label='Error', color='b', linestyle='-', marker='o', markersize=4)
-    plt.xlabel('Numero de Imagenes', fontsize=14)
-    plt.ylabel('Error Cuadratico Medio', fontsize=14)
-    plt.title(f'Error Reduction Over Iterations\n(Alpha = {alpha}, Numero de Imagenes = {len(errors)})', fontsize=16)
+    plt.xlabel('Número de Imágenes', fontsize=14)
+    plt.ylabel('Error Cuadrático Medio', fontsize=14)
+    plt.title(f'Convergencia del error \n(Alpha = {alpha}, Numero de Imagenes = {len(errors)})', fontsize=16)
     plt.legend(loc='upper right', fontsize=12)
     plt.grid(True)
     plt.xticks(fontsize=12)
@@ -89,7 +89,7 @@ def plot_error_curve(errors, alpha):
 #wolo
 
 #images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=128)
-
+"""
 #felo
 images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/train/ALL", escala=128)
 # #luli-capa:
@@ -113,7 +113,7 @@ valores_dict = {
     "b_estrella": b_estrella
 }
 
-nombre = "BW" + str(alpha_values[0]) + "___1.json"
+nombre = "BW" + str(alpha_values[0]) + "___0.json"
 with open(nombre, "w") as archivo_json:
     json.dump(valores_dict, archivo_json)
 images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/test/ALL", escala=128)
@@ -123,3 +123,4 @@ print(f"Valor inicial de w: {w}")
 
 plot_error_curve(errors, alpha_values[0])
 
+"""
