@@ -200,7 +200,7 @@ def plot_error_curve(errors, alpha):
     plt.tight_layout()
     plt.show()
 
-def predecir(i, w, b):
+def predecir(i, w, b, umbral=0.5):
     """
     Realiza predicciones utilizando el modelo entrenado.
 
@@ -208,6 +208,7 @@ def predecir(i, w, b):
         i (ndarray): Matriz de imágenes vectorizadas.
         w (ndarray): Vector de pesos.
         b (float): Sesgo.
+        umbral (float): Umbral de decisión para convertir probabilidades en predicciones binarias.
 
     Returns:
         ndarray: Vector de predicciones binarias (0 o 1).
@@ -215,6 +216,6 @@ def predecir(i, w, b):
     predicciones = []
     for imagen in i:
         z = np.dot(w, imagen) + b
-        prediccion = 1 if np.tanh(z) >= 0 else 0
+        prediccion = 1 if (np.tanh(z) + 1) / 2 >= umbral else 0
         predicciones.append(prediccion)
     return np.array(predicciones)

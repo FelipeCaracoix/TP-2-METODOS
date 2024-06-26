@@ -34,7 +34,6 @@ def main():
     print(f"Valor inicial de w: {w}")
 
     plot_error_curve(errors, alpha_values[0])
-    
 
 if __name__ == "__main__":
     main()
