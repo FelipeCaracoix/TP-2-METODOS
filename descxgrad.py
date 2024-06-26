@@ -72,11 +72,23 @@ def error_cuadratico_medio(i, w, b, d_array):
 
     return errores
 
+def plot_error_curve(errors, alpha):
+    plt.figure(figsize=(10, 6))
+    plt.plot(errors, label='Error', color='b', linestyle='-', marker='o', markersize=4)
+    plt.xlabel('Iterations', fontsize=14)
+    plt.ylabel('Error Cuadratico Medio', fontsize=14)
+    plt.title(f'Error Reduction Over Iterations\n(Alpha = {alpha}, Numero de Imagenes = {len(errors)})', fontsize=16)
+    plt.legend(loc='upper right', fontsize=12)
+    plt.grid(True)
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.tight_layout()
+    plt.show()
+
 # Cargar imágenes y datos
 #wolo
 print('hola')
 images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=128)
-print('hola')
 
 #felo
 # images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/train/ALL", escala=32)
@@ -87,19 +99,16 @@ print('hola')
 # w = np.array([-0.1]*images[0].shape[0])
 
 np.random.seed(42)
+
 b = np.random.randn(1)
 w = np.random.randn(images[0].shape[0])
+print(b,w)
+
 alpha_values = [0.001, 0.01, 0.05, 0.1, 0.5]
 
 images_balanceadas, d_balanceado = balancear_datos(images, d)
 w_estrella, b_estrella = gradiente_descendente(w, b, images_balanceadas, d_balanceado, 0.0001)
 
 errors = error_cuadratico_medio(images_balanceadas, w_estrella, b_estrella, d_balanceado)
-print(f"Valor inicial de b: {b}")
-print(f"Valor inicial de w: {w}")
-plt.plot(errors, label='Error')
-plt.xlabel('Iterations')
-plt.ylabel('Error')
-plt.title('Decreasing Error over Iterations')
-plt.legend()
-plt.show()
+
+plot_error_curve(errors,0.0001)
