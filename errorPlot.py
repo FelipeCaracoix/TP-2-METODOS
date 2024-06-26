@@ -1,4 +1,5 @@
-from descxgrad import *
+from functions import *
+import json
 
 with open('valores_buenos.json', 'r') as archivo:
     datos = json.load(archivo)

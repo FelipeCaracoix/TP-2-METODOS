@@ -56,8 +56,6 @@ def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
 
     return w, b
 
-
-
 def abrirImagenesEscaladas(carpeta, escala=32):
     imagenes = []
     etiquetas = []
@@ -127,7 +125,6 @@ def error_cuadratico_medio(i, w, b, d_array):
 
     return errores
 
-
 def plot_error_curve(errors, alpha):
     plt.figure(figsize=(10, 6))
     plt.plot(errors, label='Error', color='b', linestyle='-', marker='o', markersize=4)
@@ -139,4 +136,4 @@ def plot_error_curve(errors, alpha):
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
     plt.tight_layout()
-    plt.show() 
+    plt.show()
