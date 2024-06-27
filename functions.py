@@ -192,4 +192,23 @@ def plot_error_curve(errors, alpha):
     plt.tight_layout()
 
 
-# Luego, en tu bucle for, llama a la función plot_error_curve con los valores apropiados
+def predecir(i, w, b, umbral=0.5):
+    """
+    Realiza predicciones utilizando el modelo entrenado.
+
+    Args:
+        i (ndarray): Matriz de imágenes vectorizadas.
+        w (ndarray): Vector de pesos.
+        b (float): Sesgo.
+        umbral (float): Umbral de decisión para convertir probabilidades en predicciones binarias.
+
+    Returns:
+        ndarray: Vector de predicciones binarias (0 o 1).
+    """
+    predicciones = []
+    for imagen in i:
+        z = np.dot(w, imagen) + b
+        prediccion = 1 if (np.tanh(z) + 1) / 2 >= umbral else 0
+        predicciones.append(prediccion)
+    return np.array(predicciones)
+
