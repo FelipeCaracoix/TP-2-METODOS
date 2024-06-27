@@ -12,13 +12,24 @@ def generar_matriz_confusion(y_true, y_pred):
     - y_pred (ndarray): Predicciones del modelo.
 
     Returns:
-    - tuple: Número de Verdaderos Positivos, Falsos Negativos, Verdaderos Negativos, Falsos Positivos.
+    - tuple: Proporciones de Verdaderos Positivos, Falsos Negativos, Verdaderos Negativos, Falsos Positivos.
     """
     VP = np.sum((y_true == 1) & (y_pred == 1))  # Verdaderos Positivos
     FN = np.sum((y_true == 1) & (y_pred == 0))  # Falsos Negativos
     VN = np.sum((y_true == 0) & (y_pred == 0))  # Verdaderos Negativos
     FP = np.sum((y_true == 0) & (y_pred == 1))  # Falsos Positivos
-    return VP, FN, VN, FP
+    
+    # Calcular proporciones
+    total_enfermos = np.sum(y_true == 1)
+    total_sanos = np.sum(y_true == 0)
+    
+    VP_prop = VP / total_enfermos if total_enfermos > 0 else 0
+    FN_prop = FN / total_enfermos if total_enfermos > 0 else 0
+    VN_prop = VN / total_sanos if total_sanos > 0 else 0
+    FP_prop = FP / total_sanos if total_sanos > 0 else 0
+    
+    return VP_prop, FN_prop, VN_prop, FP_prop
+
 
 def analizar_efectividad(VP, FN, VN, FP):
     """
