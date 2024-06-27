@@ -44,14 +44,9 @@ def analizar_efectividad(VP, FN, VN, FP):
     precision = VP / (VP + FP)
     recall = VP / (VP + FN)
     accuracy = (VP + VN) / (VP + FN + VN + FP)
-    """
-    Precisión (precision): Proporción de predicciones positivas correctas sobre el total de predicciones positivas.
-    Sensibilidad (Recall): Proporción de positivos reales que se identificaron correctamente como positivos.
-    Exactitud (Accuracy): Proporción de predicciones correctas (tanto positivas como negativas) sobre el total de muestras.
-    """
 
 
-    print(f"Precisión: {precision:.2f}")
+    print(f"Precisión (Precision): {precision:.2f}")
     print(f"Sensibilidad (Recall): {recall:.2f}")
     print(f"Exactitud (Accuracy): {accuracy:.2f}")
 
@@ -86,7 +81,6 @@ def main():
 
     # Generar matriz de confusión
     VP, FN, VN, FP = generar_matriz_confusion(d_test, predicciones)
-    print(len(predicciones))
 
     # Analizar efectividad y visualizar resultados
     analizar_efectividad(VP, FN, VN, FP)
