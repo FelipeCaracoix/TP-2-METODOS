@@ -40,7 +40,7 @@ def suma_derivada(i, w, b, d_array):
             # valor f(W), valor f(B),    valor df(W), valor df(B)
 
 MAX_ITER = 1000
-TOLERANCIA = 0.01
+TOLERANCIA = 0.0001
 
 def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
     """
