@@ -192,7 +192,7 @@ def plot_error_curve(errors, alpha):
     plt.tight_layout()
 
 
-def predecir(i, w, b, umbral=0.5):
+def predecir(i, w, b, umbral=0.6):
     """
     Realiza predicciones utilizando el modelo entrenado.
 
