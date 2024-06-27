@@ -39,8 +39,8 @@ def suma_derivada(i, w, b, d_array):
     return ((suma_totalW, suma_totalB),(Dsuma_totalW, Dsuma_totalB))
             # valor f(W), valor f(B),    valor df(W), valor df(B)
 
-MAX_ITER = 10000
-TOLERANCIA = 0.0001
+MAX_ITER = 1000
+TOLERANCIA = 0.01
 
 def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
     """
@@ -76,7 +76,7 @@ def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
         print(b_siguiente)
         iter += 1
 
-    return w, b
+    return w, b, iter
 
 def abrirImagenesEscaladas(carpeta, escala=32):
     """
@@ -186,16 +186,17 @@ def error_cuadratico_medio(i, w, b, d_array):
         errores.append(suma_total/(j+1))
 
     return errores
-
 def plot_error_curve(errors, alpha):
     plt.figure(figsize=(10, 6))
     plt.plot(errors, label='Error', color='b', linestyle='-', marker='o', markersize=4)
     plt.xlabel('Numero de Imagenes', fontsize=14)
     plt.ylabel('Error Cuadratico Medio', fontsize=14)
-    plt.title(f'Error Reduction Over Iterations\n(Alpha = {alpha}, Numero de Imagenes = {len(errors)})', fontsize=16)
+    plt.suptitle(f'Error Reduction Over Iterations\nAlpha = {alpha}, Numero de Imagenes = {len(errors)}', fontsize=16)
     plt.legend(loc='upper right', fontsize=12)
     plt.grid(True)
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
     plt.tight_layout()
-    plt.show()
+
+
+# Luego, en tu bucle for, llama a la función plot_error_curve con los valores apropiados
