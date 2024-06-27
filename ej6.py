@@ -70,17 +70,6 @@ def analizar_efectividad(VP, FN, VN, FP):
     plt.tight_layout()
     plt.show()
 
-    # Gráfico de pastel para visualizar porcentajes
-    porcentajes = [VP / np.sum([VP, FN, VN, FP]), FN / np.sum([VP, FN, VN, FP]),
-                   VN / np.sum([VP, FN, VN, FP]), FP / np.sum([VP, FN, VN, FP])]
-    etiquetas_pie = [f'{label}\n({porcentaje:.2%})' for label, porcentaje in zip(labels, porcentajes)]
-    plt.figure(figsize=(8, 6))
-    plt.pie(porcentajes, labels=etiquetas_pie, colors=colores, autopct='%1.1f%%', startangle=140)
-    plt.title('Porcentaje de la Matriz de Confusión', fontsize=14)
-    plt.axis('equal')
-    plt.tight_layout()
-    plt.show()
-
 def main():
     # Cargar datos de prueba
     carpeta_prueba = "/Users/victoriamarsili/Downloads/chest_xray/test/ALL"
