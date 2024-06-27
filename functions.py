@@ -179,7 +179,6 @@ def error_cuadratico_medio(i, w, b, d_array):
         print(z)
         prediccion = (np.tanh(z) + 1) / 2
         print(prediccion, d_array[j])
-        #prediccion = (np.tanh(w.dot(i[j]) + b) + 1) / 2
         suma_total += (prediccion - d_array[j])**2
         if suma_total/(j+1) == float("inf"):
             errores.append(1)
