@@ -91,27 +91,21 @@ def abrirImagenesEscaladas(carpeta, escala=32):
     """
     imagenes = []
     etiquetas = []
+    extensiones_validas = ('.png', '.jpg', '.jpeg', '.bmp', '.gif')
 
     for dirpath, dirnames, filenames in os.walk(carpeta):
         for file in filenames:
-            img = Image.open( os.path.join(carpeta, file) )
-            img = img.resize((escala, escala))
-            img.convert('1')
-            img = np.asarray(img)
-            if len(img.shape)==3:
-                img = img[:,:,0].reshape((escala**2 )) / 255
-            else:
-                img = img.reshape((escala**2 )) / 255
-
-            imagenes.append( img )
-            # Asignar etiquetas basadas en el nombre del archivo
-            if "virus" in file or "bacteria" in file:
-                etiqueta = 1
-
-            else:
-                etiqueta = 0
-
-            etiquetas.append(etiqueta)
+            if file.lower().endswith(extensiones_validas):
+                img = Image.open(os.path.join(carpeta, file))
+                img = img.resize((escala, escala))
+                img = img.convert('L')  # Convertir a escala de grises
+                img = np.asarray(img).reshape((escala**2)) / 255.0
+                imagenes.append(img)
+                if "virus" in file or "bacteria" in file:
+                    etiqueta = 1
+                else:
+                    etiqueta = 0
+                etiquetas.append(etiqueta)
     return np.array(imagenes), np.array(etiquetas)
 
 def cargar_datos(carpeta_base, escala=32):
