@@ -6,8 +6,8 @@ Ejercicio 5. ¿Como impacta el tamano del escalado de las im ́agenes en
 la efectividad del metodo? ¿Y en el tiempo de computo?.
 Realizar los experimentos y graficos acordes para estudiar estas limitaciones.
 '''
-#4,8,16,32,64,128,256,
-valores_escala = [512,1024]
+#4,8,16,32,64,128,256,512,
+valores_escala = [1024]
 
 for escala in valores_escala:
     print(f"Procesando escala: {escala}")
@@ -48,7 +48,4 @@ for escala in valores_escala:
 
     # Guarda el gráfico sin mostrarlo en una ventana emergente
     nombre = f"escala_{escala}.png"
-    plt.savefig("pruebas_con_escalas/" + nombre)
-
-    # Cierra la figura actual
-    plt.close()
+    plt.savefig("pruebas_con_escalas/" + nom
