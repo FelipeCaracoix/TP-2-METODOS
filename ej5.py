@@ -48,4 +48,7 @@ for escala in valores_escala:
 
     # Guarda el gráfico sin mostrarlo en una ventana emergente
     nombre = f"escala_{escala}.png"
-    plt.savefig("pruebas_con_escalas/" + nom
+    plt.savefig("pruebas_con_escalas/" + nombre)
+
+    # Cierra la figura actual
+    plt.close()
