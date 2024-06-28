@@ -108,7 +108,7 @@ def abrirImagenesEscaladas(carpeta, escala=128):
                 etiquetas.append(etiqueta)
     return np.array(imagenes), np.array(etiquetas)
 
-def cargar_datos(carpeta_base, escala=32):
+def cargar_datos(carpeta_base, escala):
     """
     Carga las imágenes y etiquetas desde la carpeta base.
 
