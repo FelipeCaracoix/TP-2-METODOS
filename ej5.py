@@ -21,34 +21,35 @@ for escala in valores_escala:
     tiempo_carga = end_carga - start_carga
     print(f"Tiempo de carga y escalado: {tiempo_carga:.3f} segundos")
 
-    np.random.seed(42)
-    b_ = np.random.randn(1)
-    w_ = np.random.randn(images[0].shape[0])
+    for seed in range(200):
+        np.random.seed(r)
+        b_ = np.random.randn(1)
+        w_ = np.random.randn(images[0].shape[0])
 
-    images_balanceadas, d_balanceado = balancear_datos(images, d)
-    images_test, d_test = balancear_datos(images_test, d_test)
+        images_balanceadas, d_balanceado = balancear_datos(images, d)
+        images_test, d_test = balancear_datos(images_test, d_test)
 
-    start = time.perf_counter()
-    w_estrella, b_estrella, cant_iter = gradiente_descendente(w_, b_, images_balanceadas, d_balanceado, 0.0001)
-    end = time.perf_counter()
-    tiempo_convergencia = end - start
-    errores = error_cuadratico_medio(images_test, w_estrella, b_estrella, d_test)
+        start = time.perf_counter()
+        w_estrella, b_estrella, cant_iter = gradiente_descendente(w_, b_, images_balanceadas, d_balanceado, 0.0001)
+        end = time.perf_counter()
+        tiempo_convergencia = end - start
+        errores = error_cuadratico_medio(images_test, w_estrella, b_estrella, d_test)
 
-    plt.figure(figsize=(16, 10))
-    plt.plot(errores, label='Error', color='b', linestyle='-', marker='o', markersize=4)
-    plt.xlabel('Número de Iteraciones', fontsize=14)
-    plt.ylabel('Error Cuadratico Medio', fontsize=14)
-    plt.suptitle(f'Escala de las Imagenes: {escala}x{escala}', fontsize=18)
-    plt.title(f'Tiempo de carga: {round(tiempo_carga, 3)}s, Tiempo de convergencia: {round(tiempo_convergencia, 3)}s, Iteraciones: {cant_iter}, Mejor error:{errores[-1]}',fontsize=12)
-    plt.legend(loc='upper right', fontsize=12)
-    plt.grid(True)
-    plt.xticks(fontsize=12)
-    plt.yticks(fontsize=12)
-    plt.tight_layout()
+        plt.figure(figsize=(16, 10))
+        plt.plot(errores, label='Error', color='b', linestyle='-', marker='o', markersize=4)
+        plt.xlabel('Número de Iteraciones', fontsize=14)
+        plt.ylabel('Error Cuadratico Medio', fontsize=14)
+        plt.suptitle(f'Escala de las Imagenes: {escala}x{escala}', fontsize=18)
+        plt.title(f'Tiempo de carga: {round(tiempo_carga, 3)}s, Tiempo de convergencia: {round(tiempo_convergencia, 3)}s, Iteraciones: {cant_iter}, Mejor error:{errores[-1]}',fontsize=12)
+        plt.legend(loc='upper right', fontsize=12)
+        plt.grid(True)
+        plt.xticks(fontsize=12)
+        plt.yticks(fontsize=12)
+        plt.tight_layout()
 
-    # Guarda el gráfico sin mostrarlo en una ventana emergente
-    nombre = f"escala_{escala}.png"
-    plt.savefig("pruebas_con_escalas/" + nombre)
+        # Guarda el gráfico sin mostrarlo en una ventana emergente
+        nombre = f"escala_{escala}_{seed}.png"
+        plt.savefig("pruebas_con_escalas/" + nombre)
 
-    # Cierra la figura actual
-    plt.close()
+        # Cierra la figura actual
+        plt.close()

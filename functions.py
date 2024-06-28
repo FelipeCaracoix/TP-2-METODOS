@@ -78,7 +78,7 @@ def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
 
     return w, b, iter
 
-def abrirImagenesEscaladas(carpeta, escala=128):
+def abrirImagenesEscaladas(carpeta, escala):
     """
     Carga y escala imágenes desde una carpeta específica.
 
