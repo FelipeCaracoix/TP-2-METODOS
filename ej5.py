@@ -22,7 +22,7 @@ for escala in valores_escala:
     print(f"Tiempo de carga y escalado: {tiempo_carga:.3f} segundos")
 
     for seed in range(200):
-        np.random.seed(r)
+        np.random.seed(seed)
         b_ = np.random.randn(1)
         w_ = np.random.randn(images[0].shape[0])
 
