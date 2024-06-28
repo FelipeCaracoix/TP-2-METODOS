@@ -7,7 +7,7 @@ la efectividad del metodo? ¿Y en el tiempo de computo?.
 Realizar los experimentos y graficos acordes para estudiar estas limitaciones.
 '''
 
-valores_escala = [4,8,16,32,64,128,256,512,1024]
+valores_escala = [4,8,16,32,64,128,256,512]
 
 for escala in valores_escala:
     print(f"Procesando escala: {escala}")
@@ -16,10 +16,16 @@ for escala in valores_escala:
     # Medir el tiempo de carga y escalado de las imágenes
     start_carga = time.perf_counter()
     images_test, d_test = cargar_datos("/Users/nicolasfranke/Downloads/chest_xray/test/all", escala)
-    images, d =           cargar_datos("/Users/nicolasfranke/Downloads/chest_xray/train/all", escala)
+    images, d = cargar_datos("/Users/nicolasfranke/Downloads/chest_xray/train/all", escala)
     end_carga = time.perf_counter()
     tiempo_carga = end_carga - start_carga
     print(f"Tiempo de carga y escalado: {tiempo_carga:.3f} segundos")
+
+    mejor_error = float('inf')
+    mejor_errores = []
+    mejor_tiempo_convergencia = 0
+    mejor_cant_iter = 0
+    mejor_seed = 0
 
     for seed in range(200):
         np.random.seed(seed)
@@ -35,21 +41,28 @@ for escala in valores_escala:
         tiempo_convergencia = end - start
         errores = error_cuadratico_medio(images_test, w_estrella, b_estrella, d_test)
 
-        plt.figure(figsize=(16, 10))
-        plt.plot(errores, label='Error', color='b', linestyle='-', marker='o', markersize=4)
-        plt.xlabel('Número de Iteraciones', fontsize=14)
-        plt.ylabel('Error Cuadratico Medio', fontsize=14)
-        plt.suptitle(f'Escala de las Imagenes: {escala}x{escala}', fontsize=18)
-        plt.title(f'Tiempo de carga: {round(tiempo_carga, 3)}s, Tiempo de convergencia: {round(tiempo_convergencia, 3)}s, Iteraciones: {cant_iter}, Mejor error:{errores[-1]}',fontsize=12)
-        plt.legend(loc='upper right', fontsize=12)
-        plt.grid(True)
-        plt.xticks(fontsize=12)
-        plt.yticks(fontsize=12)
-        plt.tight_layout()
+        if errores[-1] < mejor_error:
+            mejor_error = errores[-1]
+            mejor_errores = errores
+            mejor_tiempo_convergencia = tiempo_convergencia
+            mejor_cant_iter = cant_iter
+            mejor_seed = seed
 
-        # Guarda el gráfico sin mostrarlo en una ventana emergente
-        nombre = f"escala_{escala}_{seed}.png"
-        plt.savefig("pruebas_con_escalas/" + nombre)
+    plt.figure(figsize=(16, 10))
+    plt.plot(mejor_errores, label='Error', color='b', linestyle='-', marker='o', markersize=4)
+    plt.xlabel('Número de Iteraciones', fontsize=14)
+    plt.ylabel('Error Cuadrático Medio', fontsize=14)
+    plt.suptitle(f'Escala de las Imágenes: {escala}x{escala}', fontsize=18)
+    plt.title(f'Tiempo de carga: {round(tiempo_carga, 3)}s, Tiempo de convergencia: {round(mejor_tiempo_convergencia, 3)}s, Iteraciones: {mejor_cant_iter}, Mejor error: {mejor_error}', fontsize=12)
+    plt.legend(loc='upper right', fontsize=12)
+    plt.grid(True)
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.tight_layout()
 
-        # Cierra la figura actual
-        plt.close()
+    # Guarda el gráfico sin mostrarlo en una ventana emergente
+    nombre = f"escala_{escala}_mejor_seed_{mejor_seed}.png"
+    plt.savefig(os.path.join('pruebas_con_escalas', nombre))
+
+    # Cierra la figura actual
+    plt.close()
