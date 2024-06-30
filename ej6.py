@@ -45,36 +45,29 @@ def analizar_efectividad(VP, FN, VN, FP):
     recall = VP / (VP + FN)
     accuracy = (VP + VN) / (VP + FN + VN + FP)
 
-
     print(f"Precisión (Precision): {precision:.2f}")
     print(f"Sensibilidad (Recall): {recall:.2f}")
     print(f"Exactitud (Accuracy): {accuracy:.2f}")
 
-    # Gráfico de barras para visualizar VP, FN, VN, FP
-    labels = ['Verdaderos Positivos (VP)', 'Falsos Negativos (FN)', 'Verdaderos Negativos (VN)', 'Falsos Positivos (FP)']
-    valores = [VP, FN, VN, FP]
-    colores = ['green', 'red', 'blue', 'orange']
-
-    plt.figure(figsize=(8, 6))
-    plt.bar(labels, valores, color=colores)
-    plt.xlabel('Tipos de Predicciones', fontsize=12)
-    plt.ylabel('Cantidad', fontsize=12)
-    plt.title('Matriz de Confusión', fontsize=14)
-    plt.xticks(rotation=15, fontsize=10)
-    plt.yticks(fontsize=10)
-    plt.tight_layout()
-    plt.show()
+    
 
 def main():
     # Cargar datos de prueba
     carpeta_prueba = "/Users/victoriamarsili/Downloads/chest_xray/test/ALL"
-    images_test, d_test = cargar_datos(carpeta_prueba, escala=32)
+    images_test, d_test = cargar_datos(carpeta_prueba, escala=4)
+
+    # Nombre del archivo JSON utilizado
+    nombre_archivo = '4_0.0001_top1.json'
 
     # Cargar pesos óptimos desde el archivo JSON
-    with open('32_0.0001_top1.json', 'r') as archivo_json:
+    with open(nombre_archivo, 'r') as archivo_json:
         valores_dict = json.load(archivo_json)
         w_estrella = np.array(valores_dict["w_estrella"])
         b_estrella = np.array(valores_dict["b_estrella"])
+
+    # Verificar dimensiones
+    print(f"Dimensión de las imágenes vectorizadas: {images_test[0].shape}")
+    print(f"Dimensión de los pesos: {w_estrella.shape}")
 
     # Realizar predicciones
     predicciones = predecir(images_test, w_estrella, b_estrella)
@@ -84,6 +77,21 @@ def main():
 
     # Analizar efectividad y visualizar resultados
     analizar_efectividad(VP, FN, VN, FP)
+
+    # Gráfico de barras para la matriz de confusión con título del archivo JSON
+    labels = ['Verdaderos Positivos (VP)', 'Falsos Negativos (FN)', 'Verdaderos Negativos (VN)', 'Falsos Positivos (FP)']
+    valores = [VP, FN, VN, FP]
+    colores = ['green', 'red', 'blue', 'orange']
+
+    plt.figure(figsize=(8, 6))
+    plt.bar(labels, valores, color=colores)
+    plt.xlabel('Tipos de Predicciones', fontsize=12)
+    plt.ylabel('Cantidad', fontsize=12)
+    plt.title(f'Matriz de Confusión ({nombre_archivo})', fontsize=14)  # Título con el nombre del archivo JSON
+    plt.xticks(rotation=15, fontsize=10)
+    plt.yticks(fontsize=10)
+    plt.tight_layout()
+    plt.show()
 
 if __name__ == "__main__":
     main()

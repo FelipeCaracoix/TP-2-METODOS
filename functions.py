@@ -39,7 +39,7 @@ def suma_derivada(i, w, b, d_array):
     return ((suma_totalW, suma_totalB),(Dsuma_totalW, Dsuma_totalB))
             # valor f(W), valor f(B),    valor df(W), valor df(B)
 
-MAX_ITER = 10000
+MAX_ITER = 1000
 TOLERANCIA = 0.0001
 
 def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
@@ -76,9 +76,9 @@ def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
         print(b_siguiente)
         iter += 1
 
-    return w, b
+    return w, b, iter
 
-def abrirImagenesEscaladas(carpeta, escala=32):
+def abrirImagenesEscaladas(carpeta, escala=128):
     """
     Carga y escala imágenes desde una carpeta específica.
 
@@ -91,27 +91,21 @@ def abrirImagenesEscaladas(carpeta, escala=32):
     """
     imagenes = []
     etiquetas = []
+    extensiones_validas = ('.png', '.jpg', '.jpeg', '.bmp', '.gif')
 
     for dirpath, dirnames, filenames in os.walk(carpeta):
         for file in filenames:
-            img = Image.open( os.path.join(carpeta, file) )
-            img = img.resize((escala, escala))
-            img.convert('1')
-            img = np.asarray(img)
-            if len(img.shape)==3:
-                img = img[:,:,0].reshape((escala**2 )) / 255
-            else:
-                img = img.reshape((escala**2 )) / 255
-
-            imagenes.append( img )
-            # Asignar etiquetas basadas en el nombre del archivo
-            if "virus" in file or "bacteria" in file:
-                etiqueta = 1
-
-            else:
-                etiqueta = 0
-
-            etiquetas.append(etiqueta)
+            if file.lower().endswith(extensiones_validas):
+                img = Image.open(os.path.join(carpeta, file))
+                img = img.resize((escala, escala))
+                img = img.convert('L')  # Convertir a escala de grises
+                img = np.asarray(img).reshape((escala**2)) / 255.0
+                imagenes.append(img)
+                if "virus" in file or "bacteria" in file:
+                    etiqueta = 1
+                else:
+                    etiqueta = 0
+                etiquetas.append(etiqueta)
     return np.array(imagenes), np.array(etiquetas)
 
 def cargar_datos(carpeta_base, escala=32):
@@ -179,26 +173,24 @@ def error_cuadratico_medio(i, w, b, d_array):
         print(z)
         prediccion = (np.tanh(z) + 1) / 2
         print(prediccion, d_array[j])
-        #prediccion = (np.tanh(w.dot(i[j]) + b) + 1) / 2
         suma_total += (prediccion - d_array[j])**2
         if suma_total/(j+1) == float("inf"):
             errores.append(1)
         errores.append(suma_total/(j+1))
 
     return errores
-
 def plot_error_curve(errors, alpha):
     plt.figure(figsize=(10, 6))
     plt.plot(errors, label='Error', color='b', linestyle='-', marker='o', markersize=4)
     plt.xlabel('Numero de Imagenes', fontsize=14)
     plt.ylabel('Error Cuadratico Medio', fontsize=14)
-    plt.title(f'Error Reduction Over Iterations\n(Alpha = {alpha}, Numero de Imagenes = {len(errors)})', fontsize=16)
+    plt.suptitle(f'Error Reduction Over Iterations\nAlpha = {alpha}, Numero de Imagenes = {len(errors)}', fontsize=16)
     plt.legend(loc='upper right', fontsize=12)
     plt.grid(True)
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
     plt.tight_layout()
-    plt.show()
+
 
 def predecir(i, w, b, umbral=0.5):
     """
@@ -219,3 +211,4 @@ def predecir(i, w, b, umbral=0.5):
         prediccion = 1 if (np.tanh(z) + 1) / 2 >= umbral else 0
         predicciones.append(prediccion)
     return np.array(predicciones)
+
