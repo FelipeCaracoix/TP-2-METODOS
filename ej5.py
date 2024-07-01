@@ -27,7 +27,7 @@ for escala in valores_escala:
     mejor_cant_iter = 0
     mejor_seed = 0
 
-    for seed in range(120,200):
+    for seed in range(0,200):
         print(seed)
         np.random.seed(seed)
         b_ = np.random.randn(1)
@@ -61,10 +61,8 @@ for escala in valores_escala:
             plt.yticks(fontsize=12)
             plt.tight_layout()
 
-            # Guarda el gráfico sin mostrarlo en una ventana emergente
+            # Guarda el gráfico sin mostrarlo en una nueva ventana
             nombre = f"escala_{escala}_mejor_seed_{mejor_seed}.png"
             plt.savefig(os.path.join('pruebas_con_escalas', nombre))
-
-            # Cierra la figura actual
             plt.close()
 
