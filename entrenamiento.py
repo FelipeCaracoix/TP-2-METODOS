@@ -2,12 +2,8 @@ import json
 import numpy as np
 from functions import cargar_datos, balancear_datos, gradiente_descendente, error_cuadratico_medio, plot_error_curve
 
-#wolo
-#images, d = cargar_datos("/Users/nicolasfranke/Desktop/DITELLA/Métodos Computacionales/TPs/chest_xray/test/ALL", escala=128)
-#felo
+######################### PONER DIRECTORIO ####################################
 images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/train/ALL", escala=128)
-#luli-capa:
-# images, d = cargar_datos("/Users/victoriamarsili/Downloads/chest_xray/test/ALL", escala=32)
 
 def main():
     #np.random.seed(42)
@@ -25,7 +21,7 @@ def main():
         "b_estrella": b_estrella
     }
 
-    nombre = "BW" + str(alpha_values[0]) + "___1.json"
+    nombre = "entrenamiento" + str(alpha_values[0]) + "___1.json"
     with open(nombre, "w") as archivo_json:
         json.dump(valores_dict, archivo_json)
     images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/test/ALL", escala=128)
