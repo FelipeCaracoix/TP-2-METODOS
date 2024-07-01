@@ -2,7 +2,7 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 from functions import cargar_datos, predecir
-
+#h
 def generar_matriz_confusion(y_true, y_pred):
     """
     Genera una matriz de confusión a partir de las etiquetas verdaderas y las predicciones.
