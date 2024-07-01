@@ -68,15 +68,14 @@ def analizar_efectividad(VP, FN, VN, FP):
 def main():
     # Cargar datos de prueba
     carpeta_prueba = "/Users/nicolasfranke/Downloads/chest_xray/test/all"
-    
 
-    lista_jasons = [('4_0.0001_top1.json', 4),('8_0.0001_top1.json'),
-                    ('16_0.0001_top1.json',16),('32_0.0001_top1.json'),
-                    ('64_0.0001_top1.json',64),('128_0.0001_top1.json'),
-                    ('256_0.0001_top1.json'),('512_0.0001_top1.json')]    
-    
+    lista_jasons = [('4_0.0001_top1.json', 4),('8_0.0001_top1.json',8),
+                    ('16_0.0001_top1.json',16),('32_0.0001_top1.json',32),
+                    ('64_0.0001_top1.json',64),('128_0.0001_top1.json',128),
+                    ('256_0.0001_top1.json',256),('512_0.0001_top1.json',512)]
+
     for jason, escala in lista_jasons:
-        images_test, d_test = cargar_datos(carpeta_prueba, escala=256)
+        images_test, d_test = cargar_datos(carpeta_prueba, escala)
         # Cargar pesos óptimos desde el archivo JSON
         with open(f'mejorEntrenamiento_escala_alpha/{jason}', 'r') as archivo_json:
             valores_dict = json.load(archivo_json)
