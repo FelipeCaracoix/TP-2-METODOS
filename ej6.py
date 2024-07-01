@@ -28,6 +28,11 @@ def generar_matriz_confusion(y_true, y_pred):
     VN_prop = VN / total_sanos if total_sanos > 0 else 0
     FP_prop = FP / total_sanos if total_sanos > 0 else 0
     
+    print(f"Verdaderos Positivos (VP_prop): {VP_prop:.2f}")
+    print(f"Falsos Negativos (FN_prop): {FN_prop:.2f}")
+    print(f"Verdaderos Negativos (VN_prop): {VN_prop:.2f}")
+    print(f"Falsos Positivos (FP_prop): {FP_prop:.2f}")
+    
     return VP_prop, FN_prop, VN_prop, FP_prop
 
 
@@ -44,20 +49,20 @@ def analizar_efectividad(VP, FN, VN, FP):
     precision = VP / (VP + FP)
     recall = VP / (VP + FN)
     accuracy = (VP + VN) / (VP + FN + VN + FP)
-
+    
     print(f"Precisión (Precision): {precision:.2f}")
     print(f"Sensibilidad (Recall): {recall:.2f}")
     print(f"Exactitud (Accuracy): {accuracy:.2f}")
-
+    
     
 
 def main():
     # Cargar datos de prueba
     carpeta_prueba = "/Users/victoriamarsili/Downloads/chest_xray/test/ALL"
-    images_test, d_test = cargar_datos(carpeta_prueba, escala=4)
+    images_test, d_test = cargar_datos(carpeta_prueba, escala=32)
 
     # Nombre del archivo JSON utilizado
-    nombre_archivo = '4_0.0001_top1.json'
+    nombre_archivo = '32_0.0001_top1.json'
 
     # Cargar pesos óptimos desde el archivo JSON
     with open(nombre_archivo, 'r') as archivo_json:
@@ -66,8 +71,8 @@ def main():
         b_estrella = np.array(valores_dict["b_estrella"])
 
     # Verificar dimensiones
-    print(f"Dimensión de las imágenes vectorizadas: {images_test[0].shape}")
-    print(f"Dimensión de los pesos: {w_estrella.shape}")
+    #print(f"Dimensión de las imágenes vectorizadas: {images_test[0].shape}")
+    #print(f"Dimensión de los pesos: {w_estrella.shape}")
 
     # Realizar predicciones
     predicciones = predecir(images_test, w_estrella, b_estrella)
