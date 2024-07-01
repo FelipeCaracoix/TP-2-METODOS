@@ -2,7 +2,11 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 from functions import cargar_datos, predecir
-#h
+import json
+import numpy as np
+import matplotlib.pyplot as plt
+from functions import cargar_datos, predecir
+
 def generar_matriz_confusion(y_true, y_pred):
     """
     Genera una matriz de confusión a partir de las etiquetas verdaderas y las predicciones.
@@ -28,6 +32,11 @@ def generar_matriz_confusion(y_true, y_pred):
     VN_prop = VN / total_sanos if total_sanos > 0 else 0
     FP_prop = FP / total_sanos if total_sanos > 0 else 0
     
+    print(f"Verdaderos Positivos (VP_prop): {VP_prop:.2f}")
+    print(f"Falsos Negativos (FN_prop): {FN_prop:.2f}")
+    print(f"Verdaderos Negativos (VN_prop): {VN_prop:.2f}")
+    print(f"Falsos Positivos (FP_prop): {FP_prop:.2f}")
+    
     return VP_prop, FN_prop, VN_prop, FP_prop
 
 
@@ -44,26 +53,11 @@ def analizar_efectividad(VP, FN, VN, FP):
     precision = VP / (VP + FP)
     recall = VP / (VP + FN)
     accuracy = (VP + VN) / (VP + FN + VN + FP)
-
-
+    
     print(f"Precisión (Precision): {precision:.2f}")
     print(f"Sensibilidad (Recall): {recall:.2f}")
     print(f"Exactitud (Accuracy): {accuracy:.2f}")
-
-    # Gráfico de barras para visualizar VP, FN, VN, FP
-    labels = ['Verdaderos Positivos (VP)', 'Falsos Negativos (FN)', 'Verdaderos Negativos (VN)', 'Falsos Positivos (FP)']
-    valores = [VP, FN, VN, FP]
-    colores = ['green', 'red', 'blue', 'orange']
-
-    plt.figure(figsize=(8, 6))
-    plt.bar(labels, valores, color=colores)
-    plt.xlabel('Tipos de Predicciones', fontsize=12)
-    plt.ylabel('Cantidad', fontsize=12)
-    plt.title('Matriz de Confusión', fontsize=14)
-    plt.xticks(rotation=15, fontsize=10)
-    plt.yticks(fontsize=10)
-    plt.tight_layout()
-    plt.show()
+    
 
 def main():
     # Cargar datos de prueba
@@ -91,5 +85,22 @@ def main():
         # Analizar efectividad y visualizar resultados
         analizar_efectividad(VP, FN, VN, FP)
 
+        # Gráfico de barras para la matriz de confusión con título del archivo JSON
+        labels = ['Verdaderos Positivos (VP)', 'Falsos Negativos (FN)', 'Verdaderos Negativos (VN)', 'Falsos Positivos (FP)']
+        valores = [VP, FN, VN, FP]
+        colores = ['green', 'red', 'blue', 'orange']
+
+        plt.figure(figsize=(8, 6))
+        plt.bar(labels, valores, color=colores)
+        plt.xlabel('Tipos de Predicciones', fontsize=12)
+        plt.ylabel('Cantidad', fontsize=12)
+        plt.title(f'Matriz de Confusión ({nombre_archivo})', fontsize=14)  # Título con el nombre del archivo JSON
+        plt.xticks(rotation=15, fontsize=10)
+        plt.yticks(fontsize=10)
+        plt.tight_layout()
+        plt.show()
+
 if __name__ == "__main__":
     main()
+
+
