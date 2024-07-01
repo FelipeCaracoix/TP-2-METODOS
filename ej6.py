@@ -94,7 +94,7 @@ def main():
         plt.bar(labels, valores, color=colores)
         plt.xlabel('Tipos de Predicciones', fontsize=12)
         plt.ylabel('Cantidad', fontsize=12)
-        plt.title(f'Matriz de Confusión ({nombre_archivo})', fontsize=14)  # Título con el nombre del archivo JSON
+        plt.title(f'Matriz de Confusión ({jason})', fontsize=14)
         plt.xticks(rotation=15, fontsize=10)
         plt.yticks(fontsize=10)
         plt.tight_layout()
