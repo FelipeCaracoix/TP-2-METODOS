@@ -62,7 +62,8 @@ def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
     iter = 0
 
     while iter <= MAX_ITER:
-        print(iter)
+        if iter % 100 == 0:
+            print(iter)
         _, (grad_w, grad_b) = suma_derivada(i, w, b, d)
         # Regla de actualización
         w_siguiente = w - alpha * grad_w
@@ -73,7 +74,6 @@ def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
 
         w = w_siguiente
         b = b_siguiente
-        print(b_siguiente)
         iter += 1
 
     return w, b, iter
