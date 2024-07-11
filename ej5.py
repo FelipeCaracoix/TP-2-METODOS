@@ -1,3 +1,4 @@
+#Caracoix, Marsili, Wolodarsky
 from functions import *
 import time
 
@@ -15,8 +16,8 @@ for escala in valores_escala:
     print('Comenzando Precarga.')
     # Medir el tiempo de carga y escalado de las imágenes
     start_carga = time.perf_counter()
-    images_test, d_test = cargar_datos("/Users/nicolasfranke/Downloads/chest_xray/test/all", escala)
-    images, d = cargar_datos("/Users/nicolasfranke/Downloads/chest_xray/train/all", escala)
+    images_test, d_test = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/test/ALL", escala)#Poner path a una carpeta con todas las immagenes de test
+    images, d = cargar_datos("/Users/felip/OneDrive/Escritorio/chest_xray/train/ALL", escala)#Poner path a una carpeta con todas las immagenes de train
     end_carga = time.perf_counter()
     tiempo_carga = end_carga - start_carga
     print(f"Tiempo de carga y escalado: {tiempo_carga:.3f} segundos")
@@ -26,8 +27,9 @@ for escala in valores_escala:
     mejor_tiempo_convergencia = 0
     mejor_cant_iter = 0
     mejor_seed = 0
+    alpha = 0.00001
 
-    for seed in range(120,200):
+    for seed in range(0,20):
         print(seed)
         np.random.seed(seed)
         b_ = np.random.randn(1)
@@ -37,7 +39,7 @@ for escala in valores_escala:
         images_test, d_test = balancear_datos(images_test, d_test)
 
         start = time.perf_counter()
-        w_estrella, b_estrella, cant_iter = gradiente_descendente(w_, b_, images_balanceadas, d_balanceado, 0.0001)
+        w_estrella, b_estrella, cant_iter = gradiente_descendente(w_, b_, images_balanceadas, d_balanceado, alpha)
         end = time.perf_counter()
         tiempo_convergencia = end - start
         errores = error_cuadratico_medio(images_test, w_estrella, b_estrella, d_test)
@@ -62,7 +64,7 @@ for escala in valores_escala:
             plt.tight_layout()
 
             # Guarda el gráfico sin mostrarlo en una ventana emergente
-            nombre = f"escala_{escala}_mejor_seed_{mejor_seed}.png"
+            nombre = f"e_{escala}_a_{alpha}s_{mejor_seed}.png"
             plt.savefig(os.path.join('pruebas_con_escalas', nombre))
 
             # Cierra la figura actual

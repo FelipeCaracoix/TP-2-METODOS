@@ -1,3 +1,4 @@
+#Caracoix, Marsili, Wolodarsky
 import json
 import numpy as np
 import matplotlib.pyplot as plt
@@ -61,7 +62,7 @@ def analizar_efectividad(VP, FN, VN, FP):
 
 def main():
     # Cargar datos de prueba
-    carpeta_prueba = "/Users/nicolasfranke/Downloads/chest_xray/test/all"
+    carpeta_prueba = "/Users/felip/OneDrive/Escritorio/chest_xray/test/ALL" #Poner path a una carpeta con todas las immagenes de test
 
     lista_jasons = [('4_0.0001_top1.json', 4),('8_0.0001_top1.json',8),
                     ('16_0.0001_top1.json',16),('32_0.0001_top1.json',32),
@@ -75,7 +76,7 @@ def main():
             valores_dict = json.load(archivo_json)
             w_estrella = np.array(valores_dict["w_estrella"])
             b_estrella = np.array(valores_dict["b_estrella"])
-
+        
         # Realizar predicciones
         predicciones = predecir(images_test, w_estrella, b_estrella)
 

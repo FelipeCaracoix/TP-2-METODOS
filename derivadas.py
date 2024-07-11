@@ -1,3 +1,4 @@
+#Caracoix, Marsili, Wolodarsky
 """
 Derivada de B
 d/db ((tanh(w'*i+b)+1)/2-d)^2 = (1-tanh(b+w'*i).^2)*((1+tanh(b+w'*i))/2-d)

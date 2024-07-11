@@ -1,3 +1,4 @@
+#Caracoix, Marsili, Wolodarsky
 import numpy as np
 import os
 from PIL import Image
@@ -42,7 +43,7 @@ def suma_derivada(i, w, b, d_array):
 MAX_ITER = 1000
 TOLERANCIA = 0.0001
 
-def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
+def gradiente_descendente(w_inicial, b_inicial, i, d, alpha,i_test,d_test):
     """
     Optimiza los pesos y sesgo utilizando el método de descenso por gradiente.
 
@@ -58,16 +59,18 @@ def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
     """
     w = w_inicial
     b = b_inicial
-
+    errores_test = []
+    errores_train = []
     iter = 0
 
     while iter <= MAX_ITER:
-        if iter % 100 == 0:
-            print(iter)
         _, (grad_w, grad_b) = suma_derivada(i, w, b, d)
         # Regla de actualización
+        errores_test.append(error_cuadratico_medio(i,w,b,d))
+        errores_train.append(error_cuadratico_medio(i,w,b,d))
         w_siguiente = w - alpha * grad_w
         b_siguiente = b - alpha * grad_b
+        print(iter)
 
         if np.linalg.norm(w_siguiente - w) < TOLERANCIA and abs(b_siguiente - b) < TOLERANCIA:
             break
@@ -76,7 +79,7 @@ def gradiente_descendente(w_inicial, b_inicial, i, d, alpha):
         b = b_siguiente
         iter += 1
 
-    return w, b, iter
+    return w, b, errores_test, errores_train
 
 def abrirImagenesEscaladas(carpeta, escala):
     """
@@ -147,10 +150,7 @@ def balancear_datos(imagenes, etiquetas):
     # Combinar y mezclar las clases balanceadas
     imagenes_balanceadas = balanced_class_0 + balanced_class_1
     etiquetas_balanceadas = [0] * n_samples + [1] * n_samples
-    combined = list(zip(imagenes_balanceadas, etiquetas_balanceadas))
-    np.random.shuffle(combined)
-    imagenes_balanceadas, etiquetas_balanceadas = zip(*combined)
-
+  
     return np.array(imagenes_balanceadas), np.array(etiquetas_balanceadas)
 
 def error_cuadratico_medio(i, w, b, d_array):
@@ -167,32 +167,33 @@ def error_cuadratico_medio(i, w, b, d_array):
         list: Lista de errores cuadráticos medios.
     """
     suma_total = 0.0
-    errores = []
+ 
     for j in range(i.shape[0]):
         z = np.dot(w, i[j]) + b
-        print(z)
         prediccion = (np.tanh(z) + 1) / 2
-        print(prediccion, d_array[j])
         suma_total += (prediccion - d_array[j])**2
-        if suma_total/(j+1) == float("inf"):
-            errores.append(1)
-        errores.append(suma_total/(j+1))
 
-    return errores
-def plot_error_curve(errors, alpha):
+    return suma_total / i.shape[0]
+def plot_error_curve(errors, alpha, type, escala, seed):
     plt.figure(figsize=(10, 6))
-    plt.plot(errors, label='Error', color='b', linestyle='-', marker='o', markersize=4)
-    plt.xlabel('Numero de Imagenes', fontsize=14)
+    plt.plot(errors, label='Error', color='b', linestyle='-')
+    plt.xlabel('Número de Iteraciones', fontsize=14)
     plt.ylabel('Error Cuadratico Medio', fontsize=14)
-    plt.suptitle(f'Error Reduction Over Iterations\nAlpha = {alpha}, Numero de Imagenes = {len(errors)}', fontsize=16)
+    plt.suptitle(f'Error Reduction Over Iterations', fontsize=16)
+    plt.title(f"Alpha = {alpha}, Seed = {seed}, Min_Error = {errors[-1]}, {type}", fontsize=12)
     plt.legend(loc='upper right', fontsize=12)
     plt.grid(True)
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
     plt.tight_layout()
+     # Guarda el gráfico sin mostrarlo en una ventana emergente
+    nombre = f"t_{type}e_{escala}_a_{alpha}s_{seed}.png"
+    plt.savefig(os.path.join(f's{seed}', nombre))
 
+    # Cierra la figura actual
+    plt.close()
 
-def predecir(i, w, b, umbral=0.99):
+def predecir(i, w, b, umbral=0.5):
     """
     Realiza predicciones utilizando el modelo entrenado.
 
@@ -210,5 +211,6 @@ def predecir(i, w, b, umbral=0.99):
         z = np.dot(w, imagen) + b
         prediccion = 1 if (np.tanh(z) + 1) / 2 >= umbral else 0
         predicciones.append(prediccion)
+
     return np.array(predicciones)
 
