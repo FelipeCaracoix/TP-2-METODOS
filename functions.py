@@ -186,6 +186,10 @@ def plot_error_curve(errors, alpha, type, escala, seed):
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
     plt.tight_layout()
+
+    carpeta = f's{seed}'
+    if not os.path.exists(carpeta):
+        os.makedirs(carpeta)
      # Guarda el gráfico sin mostrarlo en una ventana emergente
     nombre = f"t_{type}e_{escala}_a_{alpha}s_{seed}.png"
     plt.savefig(os.path.join(f's{seed}', nombre))
