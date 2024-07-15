@@ -66,7 +66,7 @@ def gradiente_descendente(w_inicial, b_inicial, i, d, alpha,i_test,d_test):
     while iter <= MAX_ITER:
         _, (grad_w, grad_b) = suma_derivada(i, w, b, d)
         # Regla de actualización
-        errores_test.append(error_cuadratico_medio(i,w,b,d))
+        errores_test.append(error_cuadratico_medio(i_test,w,b,d_test))
         errores_train.append(error_cuadratico_medio(i,w,b,d))
         w_siguiente = w - alpha * grad_w
         b_siguiente = b - alpha * grad_b
