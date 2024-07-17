@@ -7,6 +7,7 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 from functions import cargar_datos, predecir
+import os
 
 def generar_matriz_confusion(y_true, y_pred):
     """
@@ -60,22 +61,10 @@ def analizar_efectividad(VP, FN, VN, FP):
     print(f"Exactitud (Accuracy): {accuracy:.2f}")
     
 
-def main():
-    # Cargar datos de prueba
-    carpeta_prueba = "/Users/felip/OneDrive/Escritorio/chest_xray/test/ALL" #Poner path a una carpeta con todas las immagenes de test
+def matriz_confusion(images_test,d_test,b,w,escala,alpha,seed):
 
-    lista_jasons = [('4_0.0001_top1.json', 4),('8_0.0001_top1.json',8),
-                    ('16_0.0001_top1.json',16),('32_0.0001_top1.json',32),
-                    ('64_0.0001_top1.json',64),('128_0.0001_top1.json',128),
-                    ('256_0.0001_top1.json',256),('512_0.0001_top1.json',512)]
-
-    for jason, escala in lista_jasons:
-        images_test, d_test = cargar_datos(carpeta_prueba, escala)
-        # Cargar pesos óptimos desde el archivo JSON
-        with open(f'mejorEntrenamiento_escala_alpha/{jason}', 'r') as archivo_json:
-            valores_dict = json.load(archivo_json)
-            w_estrella = np.array(valores_dict["w_estrella"])
-            b_estrella = np.array(valores_dict["b_estrella"])
+        w_estrella = w
+        b_estrella = b
         
         # Realizar predicciones
         predicciones = predecir(images_test, w_estrella, b_estrella)
@@ -95,13 +84,11 @@ def main():
         plt.bar(labels, valores, color=colores)
         plt.xlabel('Tipos de Predicciones', fontsize=12)
         plt.ylabel('Cantidad', fontsize=12)
-        plt.title(f'Matriz de Confusión ({jason})', fontsize=14)
+        plt.title(f'Matriz de Confusión \n alpha: {alpha}, escala: {escala}, seed: {seed}', fontsize=14)
         plt.xticks(rotation=15, fontsize=10)
         plt.yticks(fontsize=10)
         plt.tight_layout()
-        plt.show()
-
-if __name__ == "__main__":
-    main()
+        nombre = f"e_{escala}_a_{alpha}s_{seed}.png"
+        plt.savefig(os.path.join("matrices", nombre))
 
 
