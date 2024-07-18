@@ -12,7 +12,7 @@ def main():
     seeds = range(1,50)
     for seed in seeds:
     #[0.0000001,0.000001,0.00001,0.0001, 0.001, 0.01]
-        alpha_values = [0.01]
+        alpha_values = [0.0001]
         
         for alpha in alpha_values:
             for Esc in array:
@@ -26,24 +26,11 @@ def main():
                 print("imagenes cargadas")
                 images_balanceadas, d_balanceado = balancear_datos(images, d)
                 w_estrella, b_estrella, errores_test, errores_train = gradiente_descendente(w, b, images_balanceadas, d_balanceado, alpha,images_test, d_test)
-                
-                """
-                w_estrella = w_estrella.tolist()
-                b_estrella = b_estrella.tolist()
-                valores_dict = {
-                    "w_estrella": w_estrella,
-                    "b_estrella": b_estrella
-                }
-                """
+
                 plot_error_curve(errores_train, alpha, "train", escala, seed)
                 plot_error_curve(errores_test, alpha, "test", escala, seed)
                 matriz_confusion(images_test,d_test, b_estrella,w_estrella,escala,alpha,seed)
-                """
-                nombre = "entrenamiento" + str(alpha_values[0]) + "_1.json"
-                with open(nombre, "w") as archivo_json:
-                    json.dump(valores_dict, archivo_json)
-                """
-                
+
                 print(f"Valor inicial de b: {b}")
                 print(f"Valor inicial de w: {w}")
 
