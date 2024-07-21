@@ -10,7 +10,7 @@ def main():
     array = [(4,177),(8,79),(16,171),(32,150),(64,123),(128,105),(256,42)]
     seeds = range(1,50)
     for seed in seeds:
-        alphas= [0.0000001,0.000001,0.00001,0.0001, 0.001, 0.01]
+        alphas= [0.0000001, 0.000001, 0.00001, 0.0001, 0.001, 0.01]
         for alpha in alphas:
             for Esc in array:
                 escala = Esc[0]

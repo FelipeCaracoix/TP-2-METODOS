@@ -89,6 +89,10 @@ def matriz_confusion(images_test,d_test,b,w,escala,alpha,seed):
         plt.yticks(fontsize=10)
         plt.tight_layout()
         nombre = f"e_{escala}_a_{alpha}s_{seed}.png"
+
+        if not os.path.exists("matrices"):
+            os.makedirs("matrices")
+
         plt.savefig(os.path.join("matrices", nombre))
 
 
